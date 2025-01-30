@@ -23,6 +23,7 @@ def rename_files():
         if not item.name.startswith('.') and item.name.lower() != 'desktop.ini' and not re.match(r'^\d+\.', item.name):
             new_name = f"{counter}.{item.name}"
             item.rename(current_dir / new_name)
+            print(f"Renamed directory: {item.name} -> {new_name}")
             counter += 1
         else:
             print(f"Skipping hidden, system, or prefixed file/folder: {item.name}")
@@ -33,6 +34,7 @@ def rename_files():
         if not item.name.startswith('.') and item.name.lower() != 'desktop.ini' and not re.match(r'^\d+\.', item.name):
             new_name = f"{counter}.{item.name}"
             item.rename(current_dir / new_name)
+            print(f"Renamed file: {item.name} -> {new_name}")
             counter += 1
         else:
             print(f"Skipping hidden, system, or prefixed file/folder: {item.name}")
@@ -50,15 +52,14 @@ def anti_rename():
             match = re.match(r'^\d+\.(.*)', item.name)
             if match:
                 new_name = match.group(1)
-                new_path = current_dir / new_name
-                if not new_path.exists():
-                    item.rename(new_path)
-                else:
-                    print(f"Skipping {item.name} as {new_name} already exists.")
+                item.rename(current_dir / new_name)
+                print(f"Renamed item: {item.name} -> {new_name}")
+            else:
+                print(f"No numeric prefix found: {item.name}")
         else:
             print(f"Skipping hidden or system file/folder: {item.name}")
 
-    print("Prefix removal complete!")
+    print("Anti-renaming complete!")
 
 def print_help():
     print("Usage: rename.py [rename|anti-rename|--help]")
